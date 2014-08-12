@@ -24,18 +24,47 @@ function yasp_add_dashboard_widgets() {
 }
 add_action( 'wp_dashboard_setup', 'yasp_add_dashboard_widgets' );
 
+
+// Load CSS
+function yasp_enqueue_styles($hook) {
+    if( 'index.php' != $hook )
+        return;
+    wp_register_style( 'custom_wp_admin_css', plugins_url( 'assets/css/yasp_dashboard.css' , __FILE__ ), false, '1.0.0' );
+    wp_enqueue_style( 'custom_wp_admin_css' );
+}
+add_action( 'admin_enqueue_scripts', 'yasp_enqueue_styles' );
+
 /**
  * Create the function to output the contents of our Dashboard Widget.
  */
 function yasp_dashboard_widget_function() {
+
 	// Display whatever it is you want to show.
-	echo "Posts: ". _yasp_get_num_published_posts( 'post' ) ."<br>\n";
-	echo "Pages: ". _yasp_get_num_published_posts( 'page' ) ."<br>\n";
-	echo "Approved comments: ". _yasp_get_num_comments( true ) ."<br>\n";
-	echo "Unapproved comment: ". _yasp_get_num_comments( false ) ."<br>\n";
-	echo "Active plugins: ". _yasp_get_active_plugins() ."<br>\n";
-	echo "Users: ". _yasp_get_num_users() ."<br>\n";
-	echo "Active Categories: ". count( get_categories() )."<br>\n";
+	echo '<ul class="items">'."\n";
+
+	// Get a list of post types
+	$post_types = get_post_types( '', 'object' );
+	$exclude = array(
+		'attachment',
+		'revision',
+		'nav_menu_item'
+	);
+	foreach($post_types as $post_type){
+		if(!in_array($post_type->name, $exclude)){
+			echo "<li><a href=\"edit.php?post_type=" . $post_type->name . "\"><strong>" . _yasp_get_num_published_posts( $post_type->name ) . "</strong> " . $post_type->labels->name . "</a></li>\n";
+		}
+	}
+
+	// Other stats
+	echo "<li><a href=\"edit-comments.php?comment_status=approved\"><strong>" . _yasp_get_num_comments( true ) . "</strong> Approved comments</a></li>\n";
+	echo "<li><a href=\"edit-comments.php?comment_status=moderated\"><strong>" . _yasp_get_num_comments( false ) . "</strong> Unapproved comments</a></li>\n";
+	echo "<li><a href=\"plugins.php\"><strong>" . _yasp_get_active_plugins() . "</strong> Active plugins</a></li>\n";
+	echo "<li><a href=\"users.php\"><strong>" . _yasp_get_num_users() . "</strong> Users</a></li>\n";
+	echo "<li><a href=\"edit-tags.php?taxonomy=category\"><strong>" . count( get_categories() ). "</strong> Active Categories</a></li>\n";
+
+	// Close the list
+	echo "</ul>\n";
+	echo '<div class="clear"></div>'."\n";
 } 
 
 /**

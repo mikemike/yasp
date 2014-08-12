@@ -1,0 +1,10 @@
+#yasp_dashboard_widget ul.items li{
+	width:50%;
+	float:left;
+}
+#yasp_dashboard_widget ul.items li strong{
+	padding-right:5px;
+}
+#yasp_dashboard_widget .clear{
+	clear:both;
+}
