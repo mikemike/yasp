@@ -51,16 +51,16 @@ function yasp_dashboard_widget_function() {
 	);
 	foreach($post_types as $post_type){
 		if(!in_array($post_type->name, $exclude)){
-			echo "<li><a href=\"edit.php?post_type=" . $post_type->name . "\"><strong>" . _yasp_get_num_published_posts( $post_type->name ) . "</strong> " . $post_type->labels->name . "</a></li>\n";
+			echo "<li><a href=\"edit.php?post_type=" . $post_type->name . "\"><strong>" . number_format_i18n( _yasp_get_num_published_posts( $post_type->name ) ) . "</strong> " . $post_type->labels->name . "</a></li>\n";
 		}
 	}
 
 	// Other stats
-	echo "<li><a href=\"edit-comments.php?comment_status=approved\"><strong>" . _yasp_get_num_comments( true ) . "</strong> " . __( 'Approved comments' ) . "</a></li>\n";
-	echo "<li><a href=\"edit-comments.php?comment_status=moderated\"><strong>" . _yasp_get_num_comments( false ) . "</strong> " . __( 'Unapproved comments' ) . "</a></li>\n";
-	echo "<li><a href=\"plugins.php\"><strong>" . _yasp_get_active_plugins() . "</strong> " . __( 'Active plugins' ) . "</a></li>\n";
-	echo "<li><a href=\"users.php\"><strong>" . _yasp_get_num_users() . "</strong> " . __( 'Users' ) . "</a></li>\n";
-	echo "<li><a href=\"edit-tags.php?taxonomy=category\"><strong>" . count( get_categories() ). "</strong> " . __( 'Active Categories' ) . "</a></li>\n";
+	echo "<li><a href=\"edit-comments.php?comment_status=approved\"><strong>" . number_format_i18n( _yasp_get_num_comments( true ) ) . "</strong> " . __( 'Approved comments' ) . "</a></li>\n";
+	echo "<li><a href=\"edit-comments.php?comment_status=moderated\"><strong>" . number_format_i18n( _yasp_get_num_comments( false ) ) . "</strong> " . __( 'Unapproved comments' ) . "</a></li>\n";
+	echo "<li><a href=\"plugins.php\"><strong>" . number_format_i18n( _yasp_get_active_plugins() ) . "</strong> " . __( 'Active plugins' ) . "</a></li>\n";
+	echo "<li><a href=\"users.php\"><strong>" . number_format_i18n( _yasp_get_num_users() ) . "</strong> " . __( 'Users' ) . "</a></li>\n";
+	echo "<li><a href=\"edit-tags.php?taxonomy=category\"><strong>" . number_format_i18n( count( get_categories() ) ). "</strong> " . __( 'Active Categories' ) . "</a></li>\n";
 
 	// Close the list
 	echo "</ul>\n";
